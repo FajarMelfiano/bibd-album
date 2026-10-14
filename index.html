@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="terang">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,41 +23,58 @@
 <body>
 <a class="skip-link" href="#album">Lewati ke Album</a>
 
-<!-- Navigasi atas: bar putih tipis, blur -->
+<!-- Navigasi atas -->
 <header class="nav">
   <div class="nav-inner">
-    <a class="brand" href="#atas" aria-label="BIBD — kembali ke atas">
+    <a class="brand" href="#atas" id="brandLogo" aria-label="BIBD — kembali ke atas">
       <span class="brand-mark" aria-hidden="true">B</span>
       <span class="brand-text">BIBD</span>
     </a>
     <nav class="nav-links" aria-label="Navigasi utama">
       <a href="#album">Album</a>
+      <a href="#timeline">Linimasa</a>
+      <a href="#dasbor">Dasbor</a>
+      <a href="#anggota">Anggota</a>
       <a href="#ketua">Ketua</a>
       <a href="#tentang">Tentang</a>
     </nav>
-    <a class="cta-pill" href="#album">Lihat Album</a>
+    <div class="nav-actions">
+      <button class="icon-btn" id="paletteBtn" aria-label="Buka palet perintah (Ctrl+K)"><i data-lucide="command" aria-hidden="true"></i></button>
+      <button class="icon-btn" id="misiBtn" aria-label="Buka panel pencapaian"><i data-lucide="award" aria-hidden="true"></i><span class="badge" id="misiBadge" hidden></span></button>
+      <button class="icon-btn" id="settingsBtn" aria-label="Buka pengaturan jelajah"><i data-lucide="settings" aria-hidden="true"></i></button>
+      <a class="cta-pill" href="#album">Lihat Album</a>
+    </div>
+  </div>
+  <!-- Denah gedung: 5 ruangan -->
+  <div class="denah-bar" role="navigation" aria-label="Denah Gedung Arsip">
+    <div class="wrap denah-inner">
+      <span class="denah-label"><i data-lucide="map" aria-hidden="true"></i>Denah</span>
+      <div class="denah-rooms" id="denahRooms" role="group" aria-label="Ruangan yang bisa dikunjungi"></div>
+      <span class="jelajah-progress" id="jelajahProgress" role="status">Jelajah 0%</span>
+    </div>
   </div>
 </header>
 
 <main id="atas">
-  <!-- 1. HERO: teks statis di atas, viewer 3D di area sendiri di bawah. Tidak bertumpuk. -->
-  <section class="hero" aria-labelledby="heroTitle">
+  <!-- 1. HERO = Lobi -->
+  <section class="hero" id="ruang-lobi" aria-labelledby="heroTitle" data-room="lobi">
     <div class="wrap hero-copy">
       <p class="eyebrow">Arsip Komunitas</p>
       <h1 id="heroTitle">BIBD.<br>Arsip yang tertib.</h1>
-      <p class="lede">Delapan arsip. Satu cerita. Terdokumentasi rapi dan mudah ditemukan.</p>
+      <p class="lede">Sembilan arsip. Lima ruangan. Satu cerita. Terdokumentasi rapi dan mudah ditemukan.</p>
       <div class="hero-cta">
         <a class="cta-pill cta-big" href="#album">Jelajahi Album</a>
         <a class="cta-ghost" href="#tentang">Pelajari dulu</a>
+        <button class="cta-tour" id="tourBtn" type="button"><i data-lucide="play" aria-hidden="true"></i><span>Mulai Tur Otomatis</span></button>
       </div>
+      <p class="tour-hint" id="tourStatus" role="status" aria-live="polite"></p>
     </div>
 
-    <!-- Viewer 3D sticky: scroll memutar + membuka kotak dossier -->
     <div class="hero-viewer" id="heroViewer">
       <div class="viewer-sticky">
         <div class="wrap viewer-col">
           <figure class="viewer-card">
-            <div class="viewer-canvas" id="viewerCanvas" role="img" aria-label="Pratinjau 3D kotak arsip BIBD yang berputar saat halaman digulir"></div>
+            <div class="viewer-canvas" id="viewerCanvas" role="img" aria-label="Pratinjau 3D kotak arsip BIBD. Seret untuk memutar, gulir untuk memperbesar."></div>
             <div class="viewer-fallback" id="viewerFallback" hidden>
               <div class="dossier-mock" aria-hidden="true"><span>BIBD</span></div>
               <p>Pratinjau 3D tidak tersedia di peramban ini.</p>
@@ -66,6 +83,7 @@
               <span class="spin" aria-hidden="true"></span>
               <span>Menyiapkan pratinjau 3D…</span>
             </div>
+            <div class="viewer-orbit-hint" aria-hidden="true"><i data-lucide="rotate-3d"></i> Seret untuk memutar — gulir di atas kanvas untuk zoom</div>
           </figure>
           <ol class="viewer-steps" id="viewerSteps" aria-label="Tahapan pratinjau 3D">
             <li class="is-active" data-step="0"><strong>Tertutup rapi.</strong><span>Kotak dossier dalam keadaan tersegel.</span></li>
@@ -77,38 +95,124 @@
     </div>
   </section>
 
+  <!-- Lanjutkan + Riwayat -->
+  <section class="section-tight" aria-label="Kelanjutan jelajah">
+    <div class="wrap lanjut-grid">
+      <button class="lanjut-card" id="lanjutBtn" type="button" hidden>
+        <i data-lucide="history" aria-hidden="true"></i>
+        <span><strong>Lanjutkan Jelajah</strong><small id="lanjutLabel"></small></span>
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <div class="riwayat-card" id="riwayatCard" hidden>
+        <p class="mini-label"><i data-lucide="clock" aria-hidden="true"></i>Terakhir dilihat</p>
+        <div class="riwayat-list" id="riwayatList"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- Statistik singkat -->
   <section class="stats" aria-label="Ringkasan angka">
     <div class="wrap stats-grid" id="statsGrid"></div>
     <p class="stats-note">Contoh</p>
   </section>
 
-  <!-- 2. ALBUM -->
-  <section class="section" id="album" aria-labelledby="albumTitle">
+  <!-- 2. GALERI ALBUM = Ruang Galeri -->
+  <section class="section" id="album" data-room="galeri" aria-labelledby="albumTitle">
     <div class="wrap">
       <h2 id="albumTitle" class="section-title">Album. Delapan arsip, satu cerita.</h2>
-      <p class="section-sub">Saring berdasarkan kategori, atau cari berdasarkan judul.</p>
+      <p class="section-sub">Saring berdasarkan kategori, tag, atau cari berdasarkan judul. Urutkan sesukamu.</p>
       <div class="album-controls">
         <label class="search" for="albumSearch">
           <i data-lucide="search" aria-hidden="true"></i>
           <span class="visually-hidden">Cari arsip berdasarkan judul</span>
           <input type="search" id="albumSearch" placeholder="Cari arsip…" autocomplete="off">
         </label>
-        <div class="chips" role="group" aria-label="Filter kategori album">
+        <div class="chips" role="group" aria-label="Filter kategori album" id="catChips">
           <button class="chip is-active" data-filter="semua" aria-pressed="true">Semua</button>
           <button class="chip" data-filter="kegiatan" aria-pressed="false">Kegiatan</button>
           <button class="chip" data-filter="meme" aria-pressed="false">Meme</button>
           <button class="chip" data-filter="dokumentasi" aria-pressed="false">Dokumentasi</button>
         </div>
       </div>
+      <div class="album-controls-2">
+        <label class="mini-select">Tag
+          <select id="tagFilter" aria-label="Filter berdasarkan tag">
+            <option value="semua">Semua tag</option>
+          </select>
+        </label>
+        <label class="mini-select">Urutkan
+          <select id="sortSelect" aria-label="Urutkan arsip">
+            <option value="terbaru">Terbaru</option>
+            <option value="terlama">Terlama</option>
+            <option value="az">A–Z</option>
+          </select>
+        </label>
+        <a class="link-fav" href="#/favorit"><i data-lucide="star" aria-hidden="true"></i>Favorit Saya (<span id="favCount">0</span>)</a>
+      </div>
       <p class="result-count" id="resultCount" role="status" aria-live="polite"></p>
       <div class="album-grid" id="albumGrid"></div>
-      <p class="empty-state" id="emptyState" hidden><strong>Tidak ada arsip yang cocok.</strong><br>Ubah kata kunci atau kategori.</p>
+      <div class="empty-state" id="emptyState" hidden>
+        <i data-lucide="package-search" aria-hidden="true"></i>
+        <p><strong>Tidak ada arsip yang cocok.</strong><br>Coba kata kunci lain atau atur ulang saringan.</p>
+        <button class="cta-pill" id="resetFilterBtn" type="button">Atur Ulang Saringan</button>
+      </div>
     </div>
   </section>
 
-  <!-- 3. KETUA FAIRUZ -->
-  <section class="section section-dark" id="ketua" aria-labelledby="ketuaTitle">
+  <!-- TIMELINE 2026 = Aula Timeline -->
+  <section class="section" id="timeline" data-room="aula" aria-labelledby="timelineTitle">
+    <div class="wrap">
+      <h2 id="timelineTitle" class="section-title">Linimasa 2026.</h2>
+      <p class="section-sub">Januari sampai Maret 2026 — geser ke samping, klik titik untuk membuka detail.</p>
+      <div class="timeline-rail" id="timelineRail" tabindex="0" role="list" aria-label="Linimasa arsip 2026"></div>
+    </div>
+  </section>
+
+  <!-- DASBOR -->
+  <section class="section" id="dasbor" aria-labelledby="dasborTitle">
+    <div class="wrap">
+      <h2 id="dasborTitle" class="section-title">Dasbor.</h2>
+      <p class="section-sub">Klik batang kategori untuk menyaring album ke kategori itu.</p>
+      <div class="dash-grid">
+        <article class="dash-card">
+          <h3><i data-lucide="bar-chart-3" aria-hidden="true"></i>Distribusi Kategori</h3>
+          <canvas id="chartKategori" width="420" height="240" role="img" aria-label="Diagram batang distribusi kategori arsip"></canvas>
+          <p class="dash-hint">Klik batang untuk filter.</p>
+        </article>
+        <article class="dash-card">
+          <h3><i data-lucide="activity" aria-hidden="true"></i>Aktivitas per Bulan</h3>
+          <canvas id="chartBulan" width="420" height="240" role="img" aria-label="Diagram garis aktivitas arsip per bulan"></canvas>
+          <p class="dash-hint">Januari sampai Maret 2026.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUANG BACA info strip -->
+  <section class="section-tight" id="ruangbaca-strip" data-room="baca" aria-label="Ruang Baca">
+    <div class="wrap baca-strip">
+      <i data-lucide="book-open" aria-hidden="true"></i>
+      <p><strong>Ruang Baca</strong> — buka arsip mana pun untuk masuk ke Ruang Baca: baca deskripsi, tag, arsip terkait, dan salin tautannya.</p>
+    </div>
+  </section>
+
+  <!-- DIREKTORI ANGGOTA -->
+  <section class="section" id="anggota" aria-labelledby="anggotaTitle">
+    <div class="wrap">
+      <h2 id="anggotaTitle" class="section-title">Anggota. <span class="contoh-tag">Contoh</span></h2>
+      <p class="section-sub">Dua belas profil contoh (nama samaran, avatar inisial). Klik untuk melihat kontribusi contoh.</p>
+      <div class="chips" role="group" aria-label="Filter peran anggota" id="roleChips">
+        <button class="chip is-active" data-role="semua" aria-pressed="true">Semua</button>
+        <button class="chip" data-role="Kurator" aria-pressed="false">Kurator</button>
+        <button class="chip" data-role="Dokumentator" aria-pressed="false">Dokumentator</button>
+        <button class="chip" data-role="Kontributor" aria-pressed="false">Kontributor</button>
+      </div>
+      <div class="anggota-grid" id="anggotaGrid"></div>
+    </div>
+  </section>
+
+  <!-- 3. KETUA = Kantor Ketua -->
+  <section class="section section-dark" id="ketua" data-room="kantor" aria-labelledby="ketuaTitle">
     <div class="wrap ketua-grid">
       <figure class="ketua-avatar-card">
         <div class="ketua-canvas" id="ketuaCanvas" role="img" aria-label="Avatar 3D Ketua Fairuz, kubus lembut berinisial F"></div>
@@ -159,10 +263,18 @@
 <footer class="footer">
   <div class="wrap footer-inner">
     <p><strong>BIBD</strong> — Arsip komunitas yang tertib.</p>
+    <p class="footer-whisper">Ada yang tersembunyi di sini… coba ketik sesuatu di palet perintah, atau sapa logo kami tiga kali.</p>
   </div>
 </footer>
 
-<!-- Modal detail bersih -->
+<!-- Minimap -->
+<aside class="minimap" id="minimap" aria-label="Peta mini gedung arsip">
+  <p class="mini-label">Peta</p>
+  <div class="minimap-dots" id="minimapDots" role="group" aria-label="Pindah ruangan"></div>
+  <p class="minimap-pct" id="minimapPct">0%</p>
+</aside>
+
+<!-- Modal detail arsip kaya -->
 <div class="modal-backdrop" id="modalBackdrop" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
     <div class="modal-thumb" id="modalThumb" aria-hidden="true"></div>
@@ -171,10 +283,77 @@
       <h2 id="modalTitle"></h2>
       <p class="modal-meta" id="modalMeta"></p>
       <p id="modalDesc"></p>
+      <div class="tag-row" id="modalTags"></div>
+      <div class="modal-related" id="modalRelated"></div>
       <div class="modal-actions">
-        <button class="cta-pill cta-big" id="modalClose">Tutup</button>
+        <button class="btn-soft" id="modalPrev" type="button"><i data-lucide="arrow-left" aria-hidden="true"></i>Sebelumnya</button>
+        <button class="btn-soft" id="modalNext" type="button">Berikutnya<i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-soft" id="modalFav" type="button"><i data-lucide="star" aria-hidden="true"></i><span>Favorit</span></button>
+        <button class="btn-soft" id="modalCopy" type="button"><i data-lucide="link" aria-hidden="true"></i><span>Salin Tautan</span></button>
+        <button class="cta-pill cta-big" id="modalClose" type="button">Tutup</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Command palette -->
+<div class="modal-backdrop" id="paletteBackdrop" hidden>
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Palet perintah">
+    <div class="palette-input">
+      <i data-lucide="command" aria-hidden="true"></i>
+      <input type="text" id="paletteInput" placeholder="Ketik arsip, ruangan, misi, atau fitur…" autocomplete="off" aria-label="Cari perintah">
+      <kbd>esc</kbd>
+    </div>
+    <ul class="palette-list" id="paletteList" role="listbox" aria-label="Hasil palet perintah"></ul>
+  </div>
+</div>
+
+<!-- Panel pencapaian -->
+<div class="modal-backdrop" id="misiBackdrop" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="misiTitle">
+    <h2 id="misiTitle">Pencapaian</h2>
+    <p class="section-sub">Enam misi jelajah. Selesaikan semuanya untuk stempel penuh.</p>
+    <div class="misi-bar-wrap"><div class="misi-bar" id="misiBar"></div></div>
+    <p class="result-count" id="misiCount"></p>
+    <ul class="misi-list" id="misiList"></ul>
+    <button class="cta-pill" id="misiClose" type="button">Tutup</button>
+  </div>
+</div>
+
+<!-- Panel pengaturan -->
+<div class="modal-backdrop" id="settingsBackdrop" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+    <h2 id="setTitle">Pengaturan Jelajah</h2>
+    <div class="set-row">
+      <label for="setTheme">Tema</label>
+      <select id="setTheme"><option value="terang">Terang</option><option value="gelap">Gelap</option></select>
+    </div>
+    <div class="set-row">
+      <label for="setSpeed">Kecepatan putar 3D</label>
+      <select id="setSpeed"><option value="lambat">Lambat</option><option value="normal">Normal</option><option value="cepat">Cepat</option></select>
+    </div>
+    <div class="set-row check">
+      <label for="setMinimap">Tampilkan minimap</label>
+      <input type="checkbox" id="setMinimap" checked>
+    </div>
+    <div class="set-row">
+      <button class="btn-soft" id="resetProgressBtn" type="button"><i data-lucide="trash-2" aria-hidden="true"></i>Reset progres jelajah</button>
+    </div>
+    <button class="cta-pill" id="settingsClose" type="button">Tutup</button>
+  </div>
+</div>
+
+<!-- Panel anggota mini -->
+<div class="modal-backdrop" id="anggotaBackdrop" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="anggotaName">
+    <div class="anggota-avatar" id="anggotaAvatar" aria-hidden="true"></div>
+    <p class="contoh-tag">Contoh</p>
+    <h2 id="anggotaName"></h2>
+    <p class="modal-meta" id="anggotaRole"></p>
+    <p id="anggotaDesc"></p>
+    <button class="cta-pill" id="anggotaClose" type="button">Tutup</button>
   </div>
 </div>
 
