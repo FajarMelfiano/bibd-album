@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BIBD — Arsip &amp; Album Komunitas</title>
-<meta name="description" content="BIBD — Album dokumentasi kegiatan, meme bersih, dan arsip komunitas. Dikurasi, tertib, dan tanpa konten eksplisit.">
-<meta property="og:title" content="BIBD — Arsip & Album Komunitas">
-<meta property="og:description" content="Album dokumentasi kegiatan, meme bersih, dan arsip komunitas. Dikurasi, tertib, bersih.">
+<title>BIBD — Ruang Arsip Dossier 3D</title>
+<meta name="description" content="BIBD — Album dokumentasi kegiatan, meme bersih, dan arsip komunitas dalam pengalaman 3D. Dikurasi, tertib, dan tanpa konten eksplisit.">
+<meta property="og:title" content="BIBD — Ruang Arsip Dossier 3D">
+<meta property="og:description" content="Album dokumentasi kegiatan, meme bersih, dan arsip komunitas dalam ruang 3D. Bersih dan tertib.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="id_ID">
 <meta name="theme-color" content="#0B0E14">
@@ -15,104 +15,102 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.469.0" defer></script>
 <link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body>
-<a class="skip-link" href="#album">Lewati ke Album</a>
+<a class="skip-link" href="#toolbarAlbum">Lewati ke Album</a>
 
 <div class="grain" aria-hidden="true"></div>
-<div class="red-line" aria-hidden="true"></div>
 
-<header class="site-header" id="beranda">
+<!-- Kanvas 3D -->
+<div id="stage3d" aria-hidden="true"></div>
+<div id="loader" role="status" aria-live="polite">
+  <span class="spin" aria-hidden="true"></span>
+  <span>Menyiapkan ruang arsip 3D…</span>
+</div>
+<div id="webglFail" hidden>
+  <p><strong>3D tidak tersedia di peramban ini.</strong> Menampilkan arsip 2D sebagai gantinya.</p>
+</div>
+
+<!-- Tooltip hover kartu 3D -->
+<div id="tip3d" hidden></div>
+
+<header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="#beranda" aria-label="BIBD Beranda">
+    <a class="brand" href="#beranda" data-zone="beranda" aria-label="BIBD Beranda">
       <span class="brand-mark" aria-hidden="true">B</span>
       <span class="brand-text">BIBD</span>
-      <span class="stamp" aria-hidden="true">ARSIP</span>
+      <span class="stamp" aria-hidden="true">ARSIP 3D</span>
     </a>
     <nav class="main-nav" aria-label="Navigasi utama">
       <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Buka menu navigasi">
         <i data-lucide="menu" aria-hidden="true"></i>
       </button>
       <ul class="nav-menu" id="navMenu">
-        <li><a href="#beranda"><i data-lucide="home" aria-hidden="true"></i>Beranda</a></li>
-        <li><a href="#album"><i data-lucide="images" aria-hidden="true"></i>Album</a></li>
-        <li><a href="#ketua"><i data-lucide="user-round" aria-hidden="true"></i>Ketua</a></li>
-        <li><a href="#tentang"><i data-lucide="info" aria-hidden="true"></i>Tentang</a></li>
+        <li><a href="#beranda" data-zone="beranda"><i data-lucide="home" aria-hidden="true"></i>Beranda</a></li>
+        <li><a href="#album" data-zone="album"><i data-lucide="images" aria-hidden="true"></i>Album</a></li>
+        <li><a href="#ketua" data-zone="ketua"><i data-lucide="user-round" aria-hidden="true"></i>Ketua</a></li>
+        <li><a href="#tentang" data-zone="tentang"><i data-lucide="info" aria-hidden="true"></i>Tentang</a></li>
       </ul>
     </nav>
+    <button class="btn btn-ghost btn-sm" id="mode2dBtn" aria-pressed="false" title="Beralih ke tampilan grid 2D">
+      <i data-lucide="layout-grid" aria-hidden="true"></i><span>Mode 2D</span>
+    </button>
   </div>
 </header>
 
-<main>
-  <!-- HERO -->
+<main id="beranda">
+  <!-- HERO overlay -->
   <section class="hero wrap" aria-labelledby="hero-title">
-    <div class="hero-dossier" aria-hidden="true">
-      <span>DOSSIER No. BIBD-2026</span>
-      <span>KLASIFIKASI: TERBUKA / BERSIH</span>
+    <p class="kicker"><i data-lucide="folder-archive" aria-hidden="true"></i> Ruang Arsip Dossier 3D</p>
+    <h1 id="hero-title">BIBD<span class="amp"> — Ruang Arsip</span> Komunitas</h1>
+    <p class="lede">Seret untuk mengorbit. Delapan kartu arsip melayang di ruang gelap berlampu lentera — klik kartunya untuk membuka dossier.</p>
+    <div class="cta-row">
+      <button class="btn btn-primary" data-zone="album"><i data-lucide="images" aria-hidden="true"></i>Jelajahi Album 3D</button>
+      <button class="btn btn-ghost" data-zone="ketua"><i data-lucide="user-round" aria-hidden="true"></i>Ke Panggung Ketua</button>
     </div>
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <p class="kicker"><i data-lucide="folder-archive" aria-hidden="true"></i> Arsip Komunitas — Edisi Bersih</p>
-        <h1 id="hero-title">BIBD<br><span class="amp">Arsip &amp; Album</span> Komunitas</h1>
-        <p class="lede">Album dokumentasi kegiatan, meme bersih, dan arsip komunitas. Dikurasi, tertib, dan tanpa konten eksplisit.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#album"><i data-lucide="images" aria-hidden="true"></i>Lihat Album</a>
-          <a class="btn btn-ghost" href="#ketua"><i data-lucide="user-round" aria-hidden="true"></i>Kenalan sama Ketua</a>
-        </div>
-        <p class="placeholder-note"><i data-lucide="image-plus" aria-hidden="true"></i> Foto asli menyusul — kirim foto kegiatan untuk mengganti placeholder.</p>
-      </div>
-      <aside class="hero-card" aria-label="Info singkat komunitas">
-        <div class="hero-card-head">
-          <span class="card-no">KARTU INFO / BIBD-00</span>
-          <span class="stamp-sm" aria-hidden="true">ARSIP</span>
-        </div>
-        <dl class="hero-facts">
-          <div><dt><i data-lucide="crown" aria-hidden="true"></i>Ketua</dt><dd>Fairuz</dd></div>
-          <div><dt><i data-lucide="crosshair" aria-hidden="true"></i>Fokus</dt><dd>Arsip &amp; Dokumentasi</dd></div>
-          <div><dt><i data-lucide="shield-check" aria-hidden="true"></i>Standar</dt><dd>Konten bersih, tertib, terdokumentasi</dd></div>
-        </dl>
-        <a class="card-link" href="#ketua">Lihat profil ketua <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-      </aside>
-    </div>
+    <p class="hint"><i data-lucide="rotate-3d" aria-hidden="true"></i> Seret untuk memutar · Cubit/scroll untuk zoom · Klik kartu untuk detail</p>
+    <dl class="hud" aria-label="Statistik komunitas">
+      <div><dt><i data-lucide="archive" aria-hidden="true"></i>Arsip</dt><dd>24</dd></div>
+      <div><dt><i data-lucide="users" aria-hidden="true"></i>Member</dt><dd>12</dd></div>
+      <div><dt><i data-lucide="calendar-days" aria-hidden="true"></i>Kegiatan</dt><dd>6</dd></div>
+      <div><dt><i data-lucide="crown" aria-hidden="true"></i>Ketua</dt><dd>1</dd></div>
+    </dl>
+    <p class="stats-note"><i data-lucide="info" aria-hidden="true"></i> Contoh — ganti dengan data asli.</p>
   </section>
 
-  <!-- STATISTIK -->
-  <section class="stats" aria-label="Statistik komunitas">
-    <div class="wrap stats-grid">
-      <div class="stat"><span class="stat-num">24</span><span class="stat-label"><i data-lucide="archive" aria-hidden="true"></i>Arsip</span></div>
-      <div class="stat"><span class="stat-num">12</span><span class="stat-label"><i data-lucide="users" aria-hidden="true"></i>Member</span></div>
-      <div class="stat"><span class="stat-num">6</span><span class="stat-label"><i data-lucide="calendar-days" aria-hidden="true"></i>Kegiatan</span></div>
-      <div class="stat"><span class="stat-num">1</span><span class="stat-label"><i data-lucide="crown" aria-hidden="true"></i>Ketua</span></div>
-    </div>
-    <p class="wrap stats-note"><i data-lucide="info" aria-hidden="true"></i> Contoh — ganti dengan data asli.</p>
-  </section>
-
-  <!-- ALBUM -->
+  <!-- ALBUM toolbar -->
   <section class="wrap album-section" id="album" aria-labelledby="album-title">
     <div class="section-head">
       <div>
         <p class="kicker"><i data-lucide="folder-open" aria-hidden="true"></i> Katalog Arsip</p>
-        <h2 id="album-title">Album BIBD</h2>
-        <p class="section-sub">Delapan arsip awal. Semua thumbnail adalah placeholder gradient + pola — bukan foto asli.</p>
+        <h2 id="album-title">Album 3D</h2>
+        <p class="section-sub">Filter menata ulang kartu di ruang 3D. Semua thumbnail placeholder gradient + pola — bukan foto asli. <strong>Foto asli menyusul.</strong></p>
       </div>
-      <div class="album-tools">
+      <div class="album-tools" id="toolbarAlbum">
         <label class="search-box" for="searchInput">
           <i data-lucide="search" aria-hidden="true"></i>
           <span class="visually-hidden">Cari arsip berdasarkan judul</span>
-          <input type="search" id="searchInput" placeholder="Cari judul arsip…" autocomplete="off" aria-label="Cari arsip berdasarkan judul">
+          <input type="search" id="searchInput" placeholder="Cari judul, mis. rapat…" autocomplete="off" aria-label="Cari arsip berdasarkan judul">
         </label>
       </div>
     </div>
-
     <div class="filters" role="group" aria-label="Filter kategori album">
       <button class="chip is-active" data-filter="semua" aria-pressed="true"><i data-lucide="layout-grid" aria-hidden="true"></i>Semua</button>
       <button class="chip" data-filter="kegiatan" aria-pressed="false"><i data-lucide="calendar-days" aria-hidden="true"></i>Kegiatan</button>
       <button class="chip" data-filter="meme" aria-pressed="false"><i data-lucide="laugh" aria-hidden="true"></i>Meme Bersih</button>
       <button class="chip" data-filter="dokumentasi" aria-pressed="false"><i data-lucide="file-text" aria-hidden="true"></i>Dokumentasi</button>
     </div>
-
     <p class="result-count" id="resultCount" role="status" aria-live="polite"></p>
-    <div class="album-grid" id="albumGrid"></div>
+    <!-- Fallback 2D (juga dipakai Mode 2D) -->
+    <div class="album-grid" id="albumGrid" hidden></div>
     <div class="empty-state" id="emptyState" hidden>
       <i data-lucide="folder-search" aria-hidden="true"></i>
       <p><strong>Tidak ada arsip yang cocok.</strong></p>
@@ -120,10 +118,11 @@
     </div>
   </section>
 
-  <!-- KETUA -->
+  <!-- KETUA overlay info -->
   <section class="wrap ketua-section" id="ketua" aria-labelledby="ketua-title">
     <p class="kicker"><i data-lucide="id-card" aria-hidden="true"></i> Profil Ketua</p>
-    <h2 id="ketua-title">Ketua BIBD</h2>
+    <h2 id="ketua-title">Panggung Ketua Fairuz</h2>
+    <p class="section-sub">Di ruang 3D: pedestal dengan kartu profil berinisial “F” + 3 plakat tanggung jawab. Klik pedestal untuk profil lengkap.</p>
     <article class="ketua-card">
       <div class="ketua-id">
         <div class="avatar" aria-hidden="true">F</div>
@@ -140,18 +139,21 @@
         <li><i data-lucide="shield-check" aria-hidden="true"></i><div><strong>Jaga Ketertiban Arsip</strong><span>Menegakkan standar konten bersih di seluruh album.</span></div></li>
       </ul>
       <blockquote class="quote"><i data-lucide="quote" aria-hidden="true"></i>“Arsip yang tertib membuat kenangan komunitas mudah ditemukan dan selalu layak dibagikan.”<footer>— Fairuz, Ketua BIBD</footer></blockquote>
+      <div class="cta-row">
+        <button class="btn btn-primary" id="openKetuaBtn"><i data-lucide="eye" aria-hidden="true"></i>Lihat Profil Lengkap</button>
+      </div>
     </article>
   </section>
 
-  <!-- TENTANG -->
+  <!-- TENTANG overlay info -->
   <section class="wrap tentang-section" id="tentang" aria-labelledby="tentang-title">
     <p class="kicker"><i data-lucide="info" aria-hidden="true"></i> Tentang Kami</p>
-    <h2 id="tentang-title">Tentang BIBD</h2>
-    <p class="section-sub tentang-lede">BIBD adalah komunitas yang mendokumentasikan kegiatan &amp; meme bersih anggotanya dalam album terstruktur. Setiap arsip diberi nomor katalog, dikurasi, dan disimpan rapi agar mudah ditelusuri kembali.</p>
+    <h2 id="tentang-title">Tiga Monolit Nilai</h2>
+    <p class="section-sub tentang-lede">BIBD adalah komunitas yang mendokumentasikan kegiatan &amp; meme bersih anggotanya dalam album terstruktur. Setiap arsip diberi nomor katalog, dikurasi, dan disimpan rapi agar mudah ditelusuri kembali. Klik monolit di ruang 3D untuk penjelasannya.</p>
     <div class="nilai-grid">
-      <article class="nilai-card"><i data-lucide="clipboard-check" aria-hidden="true"></i><h3>Tertib</h3><p>Setiap arsip melewati kurasi dan penomoran katalog sebelum tampil di album.</p></article>
-      <article class="nilai-card"><i data-lucide="folders" aria-hidden="true"></i><h3>Terdokumentasi</h3><p>Kegiatan, tanggal, dan kategori tercatat — tidak ada arsip yang tercecer.</p></article>
-      <article class="nilai-card"><i data-lucide="heart-handshake" aria-hidden="true"></i><h3>Komunitas</h3><p>Ruang yang sopan dan inklusif; semua konten bersih dan layak dibagikan.</p></article>
+      <article class="nilai-card" data-nilai="0" tabindex="0" role="button" aria-label="Nilai Tertib, tekan Enter untuk detail"><i data-lucide="clipboard-check" aria-hidden="true"></i><h3>Tertib</h3><p>Setiap arsip melewati kurasi dan penomoran katalog sebelum tampil di album.</p></article>
+      <article class="nilai-card" data-nilai="1" tabindex="0" role="button" aria-label="Nilai Terdokumentasi, tekan Enter untuk detail"><i data-lucide="folders" aria-hidden="true"></i><h3>Terdokumentasi</h3><p>Kegiatan, tanggal, dan kategori tercatat — tidak ada arsip yang tercecer.</p></article>
+      <article class="nilai-card" data-nilai="2" tabindex="0" role="button" aria-label="Nilai Komunitas, tekan Enter untuk detail"><i data-lucide="heart-handshake" aria-hidden="true"></i><h3>Komunitas</h3><p>Ruang yang sopan dan inklusif; semua konten bersih dan layak dibagikan.</p></article>
     </div>
   </section>
 </main>
@@ -160,7 +162,9 @@
   <div class="wrap footer-inner">
     <p class="footer-brand"><span class="brand-mark sm" aria-hidden="true">B</span> <strong>BIBD</strong> <span class="stamp-sm" aria-hidden="true">ARSIP</span></p>
     <p>© 2026 BIBD — Arsip Komunitas. Konten bersih, tanpa konten eksplisit.</p>
-    <nav aria-label="Navigasi footer"><a href="#beranda">Beranda</a> · <a href="#album">Album</a> · <a href="#ketua">Ketua</a> · <a href="#tentang">Tentang</a></nav>
+    <nav aria-label="Navigasi footer">
+      <a href="#beranda" data-zone="beranda">Beranda</a> · <a href="#album" data-zone="album">Album</a> · <a href="#ketua" data-zone="ketua">Ketua</a> · <a href="#tentang" data-zone="tentang">Tentang</a>
+    </nav>
   </div>
 </footer>
 
@@ -180,6 +184,18 @@
   </div>
 </div>
 
-<script src="script.js" defer></script>
+<script>
+/* Darurat: bila modul Three.js (CDN) gagal dimuat, tampilkan grid 2D agar tidak blank. */
+window.addEventListener("load", function () {
+  setTimeout(function () {
+    if (!window.__BIBD) {
+      var l = document.getElementById("loader"); if (l) l.hidden = true;
+      var w = document.getElementById("webglFail"); if (w) w.hidden = false;
+      var g = document.getElementById("albumGrid"); if (g) g.hidden = false;
+    }
+  }, 7000);
+});
+</script>
+<script type="module" src="script.js"></script>
 </body>
 </html>
