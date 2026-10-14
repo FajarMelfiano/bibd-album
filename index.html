@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIBD — Arsip &amp; Album Komunitas</title>
+<meta name="description" content="BIBD — Album dokumentasi kegiatan, meme bersih, dan arsip komunitas. Dikurasi, tertib, dan tanpa konten eksplisit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest" defer></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#album">Lewati ke Album</a>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="red-line" aria-hidden="true"></div>
+
+<header class="site-header" id="beranda">
+  <div class="wrap header-inner">
+    <a class="brand" href="#beranda" aria-label="BIBD Beranda">
+      <span class="brand-mark" aria-hidden="true">B</span>
+      <span class="brand-text">BIBD</span>
+      <span class="stamp" aria-hidden="true">ARSIP</span>
+    </a>
+    <nav class="main-nav" aria-label="Navigasi utama">
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Buka menu navigasi">
+        <i data-lucide="menu" aria-hidden="true"></i>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#beranda"><i data-lucide="home" aria-hidden="true"></i>Beranda</a></li>
+        <li><a href="#album"><i data-lucide="images" aria-hidden="true"></i>Album</a></li>
+        <li><a href="#ketua"><i data-lucide="user-round" aria-hidden="true"></i>Ketua</a></li>
+        <li><a href="#tentang"><i data-lucide="info" aria-hidden="true"></i>Tentang</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-dossier" aria-hidden="true">
+      <span>DOSSIER No. BIBD-2026</span>
+      <span>KLASIFIKASI: TERBUKA / BERSIH</span>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="kicker"><i data-lucide="folder-archive" aria-hidden="true"></i> Arsip Komunitas — Edisi Bersih</p>
+        <h1 id="hero-title">BIBD<br><span class="amp">Arsip &amp; Album</span> Komunitas</h1>
+        <p class="lede">Album dokumentasi kegiatan, meme bersih, dan arsip komunitas. Dikurasi, tertib, dan tanpa konten eksplisit.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#album"><i data-lucide="images" aria-hidden="true"></i>Lihat Album</a>
+          <a class="btn btn-ghost" href="#ketua"><i data-lucide="user-round" aria-hidden="true"></i>Kenalan sama Ketua</a>
+        </div>
+        <p class="placeholder-note"><i data-lucide="image-plus" aria-hidden="true"></i> Foto asli menyusul — kirim foto kegiatan untuk mengganti placeholder.</p>
+      </div>
+      <aside class="hero-card" aria-label="Info singkat komunitas">
+        <div class="hero-card-head">
+          <span class="card-no">KARTU INFO / BIBD-00</span>
+          <span class="stamp-sm" aria-hidden="true">ARSIP</span>
+        </div>
+        <dl class="hero-facts">
+          <div><dt><i data-lucide="crown" aria-hidden="true"></i>Ketua</dt><dd>Fairuz</dd></div>
+          <div><dt><i data-lucide="crosshair" aria-hidden="true"></i>Fokus</dt><dd>Arsip &amp; Dokumentasi</dd></div>
+          <div><dt><i data-lucide="shield-check" aria-hidden="true"></i>Standar</dt><dd>Konten bersih, tertib, terdokumentasi</dd></div>
+        </dl>
+        <a class="card-link" href="#ketua">Lihat profil ketua <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- STATISTIK -->
+  <section class="stats" aria-label="Statistik komunitas">
+    <div class="wrap stats-grid">
+      <div class="stat"><span class="stat-num">24</span><span class="stat-label"><i data-lucide="archive" aria-hidden="true"></i>Arsip</span></div>
+      <div class="stat"><span class="stat-num">12</span><span class="stat-label"><i data-lucide="users" aria-hidden="true"></i>Member</span></div>
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label"><i data-lucide="calendar-days" aria-hidden="true"></i>Kegiatan</span></div>
+      <div class="stat"><span class="stat-num">1</span><span class="stat-label"><i data-lucide="crown" aria-hidden="true"></i>Ketua</span></div>
+    </div>
+    <p class="wrap stats-note"><i data-lucide="info" aria-hidden="true"></i> Contoh — ganti dengan data asli.</p>
+  </section>
+
+  <!-- ALBUM -->
+  <section class="wrap album-section" id="album" aria-labelledby="album-title">
+    <div class="section-head">
+      <div>
+        <p class="kicker"><i data-lucide="folder-open" aria-hidden="true"></i> Katalog Arsip</p>
+        <h2 id="album-title">Album BIBD</h2>
+        <p class="section-sub">Delapan arsip awal. Semua thumbnail adalah placeholder gradient + pola — bukan foto asli.</p>
+      </div>
+      <div class="album-tools">
+        <label class="search-box">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <span class="visually-hidden">Cari arsip berdasarkan judul</span>
+          <input type="search" id="searchInput" placeholder="Cari judul arsip…" autocomplete="off">
+        </label>
+      </div>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter kategori album">
+      <button class="chip is-active" data-filter="semua" aria-pressed="true"><i data-lucide="layout-grid" aria-hidden="true"></i>Semua</button>
+      <button class="chip" data-filter="kegiatan" aria-pressed="false"><i data-lucide="calendar-days" aria-hidden="true"></i>Kegiatan</button>
+      <button class="chip" data-filter="meme" aria-pressed="false"><i data-lucide="laugh" aria-hidden="true"></i>Meme Bersih</button>
+      <button class="chip" data-filter="dokumentasi" aria-pressed="false"><i data-lucide="file-text" aria-hidden="true"></i>Dokumentasi</button>
+    </div>
+
+    <p class="result-count" id="resultCount" role="status" aria-live="polite"></p>
+    <div class="album-grid" id="albumGrid"></div>
+    <div class="empty-state" id="emptyState" hidden>
+      <i data-lucide="folder-search" aria-hidden="true"></i>
+      <p><strong>Tidak ada arsip yang cocok.</strong></p>
+      <p>Ubah kata kunci atau pilih kategori lain.</p>
+    </div>
+  </section>
+
+  <!-- KETUA -->
+  <section class="wrap ketua-section" id="ketua" aria-labelledby="ketua-title">
+    <p class="kicker"><i data-lucide="id-card" aria-hidden="true"></i> Profil Ketua</p>
+    <h2 id="ketua-title">Ketua BIBD</h2>
+    <article class="ketua-card">
+      <div class="ketua-id">
+        <div class="avatar" aria-hidden="true">F</div>
+        <div>
+          <h3>Fairuz</h3>
+          <p class="jabatan"><i data-lucide="badge-check" aria-hidden="true"></i>Ketua BIBD</p>
+        </div>
+        <span class="stamp-sm" aria-hidden="true">ARSIP</span>
+      </div>
+      <p class="bio">Fairuz memimpin BIBD dengan fokus pada kerapian arsip dan kelancaran kegiatan komunitas. Ia mengkurasi setiap dokumentasi yang masuk, memastikan album tersusun rapi per katalog, dan menjaga suasana komunitas tetap sopan serta inklusif bagi semua anggota.</p>
+      <ul class="tanggung-jawab">
+        <li><i data-lucide="archive" aria-hidden="true"></i><div><strong>Kurasi Arsip</strong><span>Menyeleksi &amp; mengkatalog setiap arsip yang masuk album.</span></div></li>
+        <li><i data-lucide="users" aria-hidden="true"></i><div><strong>Koordinasi Kegiatan</strong><span>Mengatur jadwal dan dokumentasi kegiatan komunitas.</span></div></li>
+        <li><i data-lucide="shield-check" aria-hidden="true"></i><div><strong>Jaga Ketertiban Arsip</strong><span>Menegakkan standar konten bersih di seluruh album.</span></div></li>
+      </ul>
+      <blockquote class="quote"><i data-lucide="quote" aria-hidden="true"></i>“Arsip yang tertib membuat kenangan komunitas mudah ditemukan dan selalu layak dibagikan.”<footer>— Fairuz, Ketua BIBD</footer></blockquote>
+    </article>
+  </section>
+
+  <!-- TENTANG -->
+  <section class="wrap tentang-section" id="tentang" aria-labelledby="tentang-title">
+    <p class="kicker"><i data-lucide="info" aria-hidden="true"></i> Tentang Kami</p>
+    <h2 id="tentang-title">Tentang BIBD</h2>
+    <p class="section-sub tentang-lede">BIBD adalah komunitas yang mendokumentasikan kegiatan &amp; meme bersih anggotanya dalam album terstruktur. Setiap arsip diberi nomor katalog, dikurasi, dan disimpan rapi agar mudah ditelusuri kembali.</p>
+    <div class="nilai-grid">
+      <article class="nilai-card"><i data-lucide="clipboard-check" aria-hidden="true"></i><h3>Tertib</h3><p>Setiap arsip melewati kurasi dan penomoran katalog sebelum tampil di album.</p></article>
+      <article class="nilai-card"><i data-lucide="folders" aria-hidden="true"></i><h3>Terdokumentasi</h3><p>Kegiatan, tanggal, dan kategori tercatat — tidak ada arsip yang tercecer.</p></article>
+      <article class="nilai-card"><i data-lucide="heart-handshake" aria-hidden="true"></i><h3>Komunitas</h3><p>Ruang yang sopan dan inklusif; semua konten bersih dan layak dibagikan.</p></article>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p class="footer-brand"><span class="brand-mark sm" aria-hidden="true">B</span> <strong>BIBD</strong> <span class="stamp-sm" aria-hidden="true">ARSIP</span></p>
+    <p>© 2026 BIBD — Arsip Komunitas. Konten bersih, tanpa konten eksplisit.</p>
+    <nav aria-label="Navigasi footer"><a href="#beranda">Beranda</a> · <a href="#album">Album</a> · <a href="#ketua">Ketua</a> · <a href="#tentang">Tentang</a></nav>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-thumb" id="modalThumb" aria-hidden="true"></div>
+    <div class="modal-body">
+      <p class="modal-katalog" id="modalKatalog"></p>
+      <h3 id="modalTitle"></h3>
+      <p class="modal-meta" id="modalMeta"></p>
+      <p id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="modalClose"><i data-lucide="x" aria-hidden="true"></i>Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+</body>
+</html>
