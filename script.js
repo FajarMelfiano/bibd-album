@@ -21,6 +21,13 @@ function catIcon(k) {
   return "file-text";
 }
 
+// Escape teks sebelum disisipkan ke HTML (hindari injeksi via data arsip).
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
 function renderGrid() {
   var grid = document.getElementById("albumGrid");
   var empty = document.getElementById("emptyState");
@@ -38,14 +45,14 @@ function renderGrid() {
     var card = document.createElement("article");
     card.className = "album-card";
     card.innerHTML =
-      '<div class="thumb ' + a.pola + '" role="img" aria-label="Placeholder ' + a.judul + '">' +
-      '<span class="katalog">' + a.id + '</span>' +
-      '<span class="thumb-icon"><i data-lucide="' + a.ikon + '"></i></span></div>' +
+      '<div class="thumb ' + esc(a.pola) + '" role="img" aria-label="Placeholder ' + esc(a.judul) + '">' +
+      '<span class="katalog">' + esc(a.id) + '</span>' +
+      '<span class="thumb-icon"><i data-lucide="' + esc(a.ikon) + '"></i></span></div>' +
       '<div class="album-body">' +
-      '<span class="cat"><i data-lucide="' + catIcon(a.kategori) + '"></i>' + a.catLabel + '</span>' +
-      "<h3>" + a.judul + "</h3>" +
-      '<p class="album-date"><i data-lucide="calendar"></i>' + a.tanggal + "</p>" +
-      '<button class="detail-btn" data-id="' + a.id + '"><i data-lucide="eye"></i>Lihat Detail</button>' +
+      '<span class="cat"><i data-lucide="' + esc(catIcon(a.kategori)) + '"></i>' + esc(a.catLabel) + '</span>' +
+      "<h3>" + esc(a.judul) + "</h3>" +
+      '<p class="album-date"><i data-lucide="calendar"></i>' + esc(a.tanggal) + "</p>" +
+      '<button class="detail-btn" data-id="' + esc(a.id) + '"><i data-lucide="eye"></i>Lihat Detail</button>' +
       "</div>";
     grid.appendChild(card);
   });
@@ -102,6 +109,23 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("modalClose").addEventListener("click", closeModal);
   document.getElementById("modalBackdrop").addEventListener("click", function (e) {
     if (e.target === this) closeModal();
+  });
+  // Focus trap: putar Tab di dalam modal; Esc menutup.
+  document.getElementById("modalBackdrop").addEventListener("keydown", function (e) {
+    if (e.key !== "Tab") return;
+    var focusables = Array.prototype.slice.call(
+      document.querySelectorAll('#modalBackdrop button, #modalBackdrop [href], #modalBackdrop input, #modalBackdrop [tabindex]:not([tabindex="-1"])')
+    ).filter(function (el) { return !el.disabled && el.offsetParent !== null; });
+    if (!focusables.length) { e.preventDefault(); return; }
+    var first = focusables[0];
+    var last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   });
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && !document.getElementById("modalBackdrop").hidden) closeModal();
