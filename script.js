@@ -1,45 +1,36 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 
-/* Data arsip — placeholder bersih, konten tetap. */
+/* Data arsip — placeholder bersih, konten tetap. Hanya akronim BIBD. */
 const ARSIP = [
-  { id: "BIBD-001", judul: "Rapat Perdana Komunitas", kategori: "kegiatan", catLabel: "Kegiatan", tanggal: "12 Jan 2026", pola: "t1", c1: "#3B2F0B", c2: "#F5C518", deskripsi: "Dokumentasi placeholder rapat perdana: pembahasan visi arsip, pembagian peran, dan foto bersama. Ganti dengan foto dan ringkasan asli kegiatan." },
-  { id: "BIBD-002", judul: "Meme Rapat yang Tertib", kategori: "meme", catLabel: "Meme Bersih", tanggal: "19 Jan 2026", pola: "t2", c1: "#0E3A3A", c2: "#2DD4BF", deskripsi: "Placeholder meme bersih bertema rapat komunitas. Ganti dengan meme buatan anggota yang sopan dan layak dibagikan." },
-  { id: "BIBD-003", judul: "Kerja Bakti Arsip", kategori: "kegiatan", catLabel: "Kegiatan", tanggal: "02 Feb 2026", pola: "t3", c1: "#3B1D5E", c2: "#A78BFA", deskripsi: "Placeholder dokumentasi kerja bakti merapikan ruang arsip komunitas. Ganti dengan foto kegiatan asli dan daftar peserta." },
-  { id: "BIBD-004", judul: "Infografis Alur Katalog", kategori: "dokumentasi", catLabel: "Dokumentasi", tanggal: "09 Feb 2026", pola: "t4", c1: "#5E1F24", c2: "#F87171", deskripsi: "Placeholder infografis alur penomoran katalog BIBD-001 dan seterusnya. Ganti dengan dokumen atau gambar infografis asli." },
-  { id: "BIBD-005", judul: "Meme Katalog Hilang", kategori: "meme", catLabel: "Meme Bersih", tanggal: "16 Feb 2026", pola: "t5", c1: "#1E3A5E", c2: "#60A5FA", deskripsi: "Placeholder meme bersih tentang arsip yang nyaris hilang katalog. Ganti dengan meme anggota yang tetap sopan." },
-  { id: "BIBD-006", judul: "Kunjungan Studi Arsip", kategori: "dokumentasi", catLabel: "Dokumentasi", tanggal: "23 Feb 2026", pola: "t6", c1: "#3A2A0E", c2: "#FB923C", deskripsi: "Placeholder dokumentasi kunjungan studi ke ruang arsip lain. Ganti dengan foto dan catatan hasil kunjungan asli." },
-  { id: "BIBD-007", judul: "Nonton Bareng Komunitas", kategori: "kegiatan", catLabel: "Kegiatan", tanggal: "02 Mar 2026", pola: "t7", c1: "#23401F", c2: "#4ADE80", deskripsi: "Placeholder dokumentasi acara nonton bareng anggota komunitas. Ganti dengan foto suasana dan daftar hadir asli." },
-  { id: "BIBD-008", judul: "Panduan Contributor Arsip", kategori: "dokumentasi", catLabel: "Dokumentasi", tanggal: "09 Mar 2026", pola: "t8", c1: "#4A1533", c2: "#F472B6", deskripsi: "Placeholder panduan cara anggota mengirim arsip baru ke kurator. Ganti dengan dokumen panduan asli komunitas." }
-];
-
-const NILAI = [
-  { judul: "Tertib", warna: "#F5C518", teks: "Setiap arsip melewati kurasi dan penomoran katalog sebelum tampil di album. Tanpa nomor katalog, arsip tidak dipajang." },
-  { judul: "Terdokumentasi", warna: "#2DD4BF", teks: "Kegiatan, tanggal, dan kategori tercatat — tidak ada arsip yang tercecer. Semua bisa ditelusuri kembali lewat katalog." },
-  { judul: "Komunitas", warna: "#A78BFA", teks: "Ruang yang sopan dan inklusif; semua konten bersih dan layak dibagikan ke siapa pun." }
+  { id: "BIBD-001", judul: "Rapat Perdana Komunitas", kategori: "kegiatan", catLabel: "Kegiatan", tanggal: "12 Jan 2026", pola: "t1", deskripsi: "Dokumentasi placeholder rapat perdana: pembahasan visi arsip, pembagian peran, dan foto bersama. Ganti dengan foto dan ringkasan asli kegiatan." },
+  { id: "BIBD-002", judul: "Meme Rapat yang Tertib", kategori: "meme", catLabel: "Meme Bersih", tanggal: "19 Jan 2026", pola: "t2", deskripsi: "Placeholder meme bersih bertema rapat komunitas. Ganti dengan meme buatan anggota yang sopan dan layak dibagikan." },
+  { id: "BIBD-003", judul: "Kerja Bakti Arsip", kategori: "kegiatan", catLabel: "Kegiatan", tanggal: "02 Feb 2026", pola: "t3", deskripsi: "Placeholder dokumentasi kerja bakti merapikan ruang arsip komunitas. Ganti dengan foto kegiatan asli dan daftar peserta." },
+  { id: "BIBD-004", judul: "Infografis Alur Katalog", kategori: "dokumentasi", catLabel: "Dokumentasi", tanggal: "09 Feb 2026", pola: "t4", deskripsi: "Placeholder infografis alur penomoran katalog BIBD-001 dan seterusnya. Ganti dengan dokumen atau gambar infografis asli." },
+  { id: "BIBD-005", judul: "Meme Katalog Hilang", kategori: "meme", catLabel: "Meme Bersih", tanggal: "16 Feb 2026", pola: "t5", deskripsi: "Placeholder meme bersih tentang arsip yang nyaris hilang katalog. Ganti dengan meme anggota yang tetap sopan." },
+  { id: "BIBD-006", judul: "Kunjungan Studi Arsip", kategori: "dokumentasi", catLabel: "Dokumentasi", tanggal: "23 Feb 2026", pola: "t6", deskripsi: "Placeholder dokumentasi kunjungan studi ke ruang arsip lain. Ganti dengan foto dan catatan hasil kunjungan asli." },
+  { id: "BIBD-007", judul: "Nonton Bareng Komunitas", kategori: "kegiatan", catLabel: "Kegiatan", tanggal: "02 Mar 2026", pola: "t7", deskripsi: "Placeholder dokumentasi acara nonton bareng anggota komunitas. Ganti dengan foto suasana dan daftar hadir asli." },
+  { id: "BIBD-008", judul: "Panduan Contributor Arsip", kategori: "dokumentasi", catLabel: "Dokumentasi", tanggal: "09 Mar 2026", pola: "t8", deskripsi: "Placeholder panduan cara anggota mengirim arsip baru ke kurator. Ganti dengan dokumen panduan asli komunitas." }
 ];
 
 const STATS = [
   { angka: "24", label: "Arsip" },
-  { angka: "12", label: "Member" },
+  { angka: "12", label: "Anggota" },
   { angka: "6", label: "Kegiatan" },
   { angka: "1", label: "Ketua" }
 ];
 
 const KETUA = {
   nama: "Fairuz", jabatan: "Ketua BIBD",
-  bio: "Fairuz memimpin BIBD dengan fokus pada kerapian arsip dan kelancaran kegiatan komunitas. Ia mengkurasi setiap dokumentasi yang masuk, memastikan album tersusun rapi per katalog, dan menjaga suasana komunitas tetap sopan serta inklusif bagi semua anggota.",
-  tugas: ["Kurasi Arsip — menyeleksi & mengkatalog setiap arsip.", "Koordinasi Kegiatan — mengatur jadwal dan dokumentasi.", "Jaga Ketertiban Arsip — menegakkan standar konten bersih."],
+  tugas: ["Kurasi Arsip — menyeleksi dan mengkatalog setiap arsip.", "Koordinasi Kegiatan — mengatur jadwal dan dokumentasi.", "Jaga Ketertiban — menegakkan standar konten bersih."],
   quote: "Arsip yang tertib membuat kenangan komunitas mudah ditemukan dan selalu layak dibagikan."
 };
-
-const ZONE_LABEL = { beranda: "Beranda", album: "Album", ketua: "Ketua", tentang: "Tentang" };
 
 let activeFilter = "semua";
 let query = "";
 let lastFocus = null;
-let currentZone = "beranda";
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const finePointer = window.matchMedia("(pointer: fine)").matches;
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
 /* ---------- util ---------- */
@@ -52,624 +43,398 @@ function visibleArsip() {
   return ARSIP.filter((a) => (activeFilter === "semua" || a.kategori === activeFilter) && (!q || a.judul.toLowerCase().includes(q)));
 }
 
-/* ---------- panel detail (hanya saat klik) ---------- */
-function openSheetArsip(id) {
-  const a = ARSIP.find((x) => x.id === id);
-  if (!a) return;
-  lastFocus = document.activeElement;
-  document.getElementById("sheetKatalog").textContent = "KATALOG " + a.id + " / " + a.catLabel.toUpperCase();
-  document.getElementById("sheetTitle").textContent = a.judul;
-  document.getElementById("sheetMeta").textContent = a.tanggal + " — " + a.catLabel;
-  document.getElementById("sheetDesc").textContent = a.deskripsi;
-  document.getElementById("sheetThumb").className = "sheet-thumb thumb " + a.pola;
-  document.getElementById("sheetBackdrop").hidden = false;
-  document.getElementById("sheetClose").focus();
-}
-function openSheetKetua() {
-  lastFocus = document.activeElement;
-  document.getElementById("sheetKatalog").textContent = "PROFIL KETUA BIBD";
-  document.getElementById("sheetTitle").textContent = KETUA.nama + " — " + KETUA.jabatan;
-  document.getElementById("sheetMeta").textContent = "Penanggung jawab arsip & kegiatan komunitas";
-  document.getElementById("sheetDesc").textContent = KETUA.bio + " " + KETUA.tugas.join(" ") + ' "' + KETUA.quote + '"';
-  document.getElementById("sheetThumb").className = "sheet-thumb thumb t1";
-  document.getElementById("sheetBackdrop").hidden = false;
-  document.getElementById("sheetClose").focus();
-}
-function openSheetNilai(i) {
-  const n = NILAI[i];
-  if (!n) return;
-  lastFocus = document.activeElement;
-  document.getElementById("sheetKatalog").textContent = "NILAI BIBD";
-  document.getElementById("sheetTitle").textContent = n.judul;
-  document.getElementById("sheetMeta").textContent = "Tiga monolit nilai komunitas";
-  document.getElementById("sheetDesc").textContent = n.teks;
-  document.getElementById("sheetThumb").className = "sheet-thumb thumb t3";
-  document.getElementById("sheetBackdrop").hidden = false;
-  document.getElementById("sheetClose").focus();
-}
-function closeSheet() {
-  document.getElementById("sheetBackdrop").hidden = true;
-  if (lastFocus && lastFocus.focus) lastFocus.focus();
+/* ---------- statistik ---------- */
+function renderStats() {
+  const grid = document.getElementById("statsGrid");
+  grid.innerHTML = STATS.map((s) =>
+    '<div><p class="stat-num">' + esc(s.angka) + '</p><p class="stat-label">' + esc(s.label) + "</p></div>"
+  ).join("");
 }
 
-/* ---------- fallback 2D (hanya gagal WebGL / Mode 2D) ---------- */
-function catLabel(k) { return k === "kegiatan" ? "Kegiatan" : k === "meme" ? "Meme Bersih" : "Dokumentasi"; }
-function renderFallback() {
+/* ---------- album ---------- */
+function renderAlbum() {
   const grid = document.getElementById("albumGrid");
   const empty = document.getElementById("emptyState");
   const hasil = visibleArsip();
-  const teks = "Menampilkan " + hasil.length + " dari " + ARSIP.length + " arsip";
-  document.getElementById("resultCount").textContent = teks;
-  document.getElementById("fallbackCount").textContent = teks;
+  document.getElementById("resultCount").textContent = "Menampilkan " + hasil.length + " dari " + ARSIP.length + " arsip";
   empty.hidden = hasil.length !== 0;
   grid.innerHTML = "";
   hasil.forEach((a) => {
-    const card = document.createElement("article");
-    card.className = "album-card";
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "album-card reveal is-visible";
+    card.setAttribute("data-id", a.id);
+    card.setAttribute("aria-label", "Buka detail " + a.judul);
     card.innerHTML =
-      '<div class="thumb ' + esc(a.pola) + '" role="img" aria-label="Placeholder ' + esc(a.judul) + '">' +
-      '<span class="katalog">' + esc(a.id) + '</span></div>' +
-      '<div class="album-body">' +
-      '<span class="cat">' + esc(a.catLabel) + "</span>" +
+      '<span class="thumb ' + esc(a.pola) + '" aria-hidden="true"><span class="katalog">' + esc(a.id) + "</span></span>" +
+      '<span class="album-body"><span class="cat">' + esc(a.catLabel) + "</span>" +
       "<h3>" + esc(a.judul) + "</h3>" +
-      '<p class="album-date">' + esc(a.tanggal) + "</p>" +
-      '<button class="detail-btn" data-id="' + esc(a.id) + '">Lihat Detail</button>' +
-      "</div>";
+      '<span class="album-date">' + esc(a.tanggal) + "</span></span>";
+    card.addEventListener("click", () => openArsip(a.id));
     grid.appendChild(card);
   });
-}
-function updateCountOnly() {
-  const hasil = visibleArsip();
-  const teks = "Menampilkan " + hasil.length + " dari " + ARSIP.length + " arsip";
-  const rc = document.getElementById("resultCount");
-  if (rc) rc.textContent = teks;
-  const fc = document.getElementById("fallbackCount");
-  if (fc) fc.textContent = teks;
-  const em = document.getElementById("emptyState");
-  if (em) em.hidden = hasil.length !== 0;
+  attachTilt(grid);
 }
 
-/* ---------- tekstur kanvas 3D ---------- */
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
+/* Tilt 3D halus pada kartu (maks 6 derajat, pointer halus saja). */
+function attachTilt(grid) {
+  if (!finePointer || reducedMotion) return;
+  grid.querySelectorAll(".album-card").forEach((card) => {
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = "rotateX(" + (-py * 6).toFixed(2) + "deg) rotateY(" + (px * 6).toFixed(2) + "deg) translateZ(6px)";
+    });
+    card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+  });
 }
-function wrapText(ctx, text, x, y, maxW, lh) {
-  const words = String(text).split(" ");
-  let line = "";
-  for (const w of words) {
-    const t = line ? line + " " + w : w;
-    if (ctx.measureText(t).width > maxW && line) { ctx.fillText(line, x, y); line = w; y += lh; }
-    else line = t;
+
+/* ---------- modal ---------- */
+function openModal(katalog, judul, meta, deskripsi, pola) {
+  lastFocus = document.activeElement;
+  document.getElementById("modalKatalog").textContent = katalog;
+  document.getElementById("modalTitle").textContent = judul;
+  document.getElementById("modalMeta").textContent = meta;
+  document.getElementById("modalDesc").textContent = deskripsi;
+  document.getElementById("modalThumb").className = "modal-thumb thumb " + pola;
+  document.getElementById("modalBackdrop").hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("modalClose").focus();
+}
+function openArsip(id) {
+  const a = ARSIP.find((x) => x.id === id);
+  if (!a) return;
+  openModal("KATALOG " + a.id + " / " + a.catLabel.toUpperCase(), a.judul, a.tanggal + " — " + a.catLabel, a.deskripsi, a.pola);
+}
+function openKetua() {
+  openModal("PROFIL KETUA BIBD", KETUA.nama + " — " + KETUA.jabatan,
+    "Penanggung jawab arsip dan kegiatan komunitas",
+    KETUA.tugas.join(" ") + " " + KETUA.quote, "t1");
+}
+function closeModal() {
+  document.getElementById("modalBackdrop").hidden = true;
+  document.body.style.overflow = "";
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+/* ---------- reveal saat scroll ---------- */
+function initReveal() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".feature-card.reveal").forEach((el) => io.observe(el));
+}
+
+/* ---------- TEKSTUR ---------- */
+function labelTexture() {
+  const cv = document.createElement("canvas"); cv.width = 512; cv.height = 384;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#E8E8ED"; ctx.fillRect(0, 0, 512, 384);
+  ctx.strokeStyle = "#C7C7CC"; ctx.lineWidth = 6; ctx.strokeRect(24, 24, 464, 336);
+  ctx.fillStyle = "#1D1D1F"; ctx.font = "800 120px Inter, sans-serif"; ctx.textAlign = "center";
+  ctx.fillText("BIBD", 256, 200);
+  ctx.fillStyle = "#6E6E73"; ctx.font = "600 34px Inter, sans-serif";
+  ctx.fillText("ARSIP KOMUNITAS", 256, 262);
+  ctx.fillStyle = "#0071E3"; ctx.beginPath(); ctx.arc(256, 310, 14, 0, Math.PI * 2); ctx.fill();
+  const t = new THREE.CanvasTexture(cv);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+function fTexture() {
+  const cv = document.createElement("canvas"); cv.width = 256; cv.height = 256;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#E8E8ED"; ctx.fillRect(0, 0, 256, 256);
+  ctx.strokeStyle = "#0071E3"; ctx.lineWidth = 10;
+  ctx.beginPath(); ctx.arc(128, 128, 92, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = "#1D1D1F"; ctx.font = "800 130px Inter, sans-serif"; ctx.textAlign = "center";
+  ctx.fillText("F", 128, 178);
+  const t = new THREE.CanvasTexture(cv);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+/* ---------- HERO 3D: product viewer studio ---------- */
+let heroState = { progress: 0, renderer: null, ok: false, still: false };
+let ketuaState = { renderer: null, ok: false };
+
+function heroProgress() {
+  const viewer = document.getElementById("heroViewer");
+  const stickyH = window.innerHeight - 60;
+  const total = viewer.offsetHeight - stickyH;
+  if (total <= 0) return 0;
+  const scrolled = Math.min(Math.max(-viewer.getBoundingClientRect().top, 0), total);
+  return scrolled / total;
+}
+function updateSteps(p) {
+  const idx = p < 0.33 ? 0 : p < 0.66 ? 1 : 2;
+  document.querySelectorAll("#viewerSteps li").forEach((li) => {
+    li.classList.toggle("is-active", Number(li.getAttribute("data-step")) === idx);
+  });
+}
+
+function initHero3D() {
+  const mount = document.getElementById("viewerCanvas");
+  const loading = document.getElementById("viewerLoading");
+  const fallback = document.getElementById("viewerFallback");
+  const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 2));
+  renderer.setSize(mount.clientWidth, mount.clientHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+  mount.appendChild(renderer.domElement);
+  heroState.renderer = renderer;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, mount.clientWidth / mount.clientHeight, 0.1, 60);
+  camera.position.set(0, 2.4, 8.2);
+  camera.lookAt(0, 0.1, 0);
+
+  /* Pencahayaan studio lembut — tanpa fog, tanpa partikel. */
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xd8d8de, 0.95));
+  const key = new THREE.DirectionalLight(0xffffff, 1.5);
+  key.position.set(4, 7, 5);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.radius = 6;
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0xdceBff, 0.4);
+  fill.position.set(-5, 3, -3);
+  scene.add(fill);
+
+  /* Bayangan lembut di bawah objek. */
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(30, 30),
+    new THREE.ShadowMaterial({ opacity: 0.14 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -1.15;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  /* Kotak dossier premium: badan + tutup berengsel + halaman + label. */
+  const group = new THREE.Group();
+  scene.add(group);
+  const matBody = new THREE.MeshStandardMaterial({ color: 0xdcdce0, roughness: 0.55, metalness: 0.05 });
+  const matPage = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9 });
+
+  const body = new THREE.Mesh(new RoundedBoxGeometry(3.4, 0.55, 2.5, 4, 0.1), matBody);
+  body.castShadow = true; body.receiveShadow = true;
+  group.add(body);
+
+  const pages = [];
+  for (let i = 0; i < 3; i++) {
+    const pg = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.09, 2.1), matPage);
+    pg.position.y = 0.32 + i * 0.11;
+    pg.castShadow = true;
+    group.add(pg);
+    pages.push(pg);
   }
-  ctx.fillText(line, x, y);
-  return y;
-}
-function polaDasar(ctx, W, H, c1, c2) {
-  const g = ctx.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, c1); g.addColorStop(1, c2);
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = "rgba(255,255,255,.20)"; ctx.lineWidth = 2;
-  for (let i = 0; i < W; i += 64) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke(); }
-  for (let j = 0; j < H; j += 64) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke(); }
-  ctx.fillStyle = "rgba(0,0,0,.35)"; ctx.fillRect(0, 0, W, H);
-}
-function texKartu(a) {
-  const W = 512, H = 720;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  polaDasar(ctx, W, H, a.c1, a.c2);
-  ctx.fillStyle = "rgba(0,0,0,.55)";
-  roundRect(ctx, 28, 28, 200, 52, 12); ctx.fill();
-  ctx.fillStyle = "#fff"; ctx.font = "700 30px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText(a.id, 52, 63);
-  ctx.fillStyle = "#F5C518";
-  ctx.beginPath(); ctx.arc(W - 76, 76, 44, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = "#1A1405"; ctx.font = "900 44px Georgia,serif";
-  ctx.fillText((a.judul.trim()[0] || "B"), W - 92, 92);
-  ctx.fillStyle = "#F5C518"; ctx.font = "700 26px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText(a.catLabel.toUpperCase(), 40, H - 170);
-  ctx.fillStyle = "#fff"; ctx.font = "900 44px Georgia,serif";
-  wrapText(ctx, a.judul, 40, H - 120, W - 80, 50);
-  ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.font = "500 26px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText(a.tanggal, 40, H - 40);
-  const t = new THREE.CanvasTexture(cv);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-/* Papan judul 3D zona Beranda — menggantikan hero HTML */
-function texJudul() {
-  const W = 1024, H = 512;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  ctx.fillStyle = "#11161F"; ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = "#F5C518"; ctx.lineWidth = 6; ctx.strokeRect(18, 18, W - 36, H - 36);
-  ctx.setLineDash([14, 10]); ctx.strokeStyle = "#2A3447"; ctx.lineWidth = 3; ctx.strokeRect(44, 44, W - 88, H - 88);
-  ctx.setLineDash([]);
-  ctx.fillStyle = "#6E7890"; ctx.font = "700 30px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText("DOSSIER No. BIBD-2026  ·  KLASIFIKASI: TERBUKA", 70, 110);
-  ctx.fillStyle = "#F5C518"; ctx.font = "900 190px Georgia,serif";
-  ctx.fillText("BIBD", 64, 320);
-  ctx.fillStyle = "#F2EFE6"; ctx.font = "700 52px Georgia,serif";
-  ctx.fillText("Ruang Arsip Komunitas", 70, 400);
-  ctx.fillStyle = "#A7B0C0"; ctx.font = "500 30px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText("Klik kartu di zona Album untuk membuka dossier", 70, 452);
-  const t = new THREE.CanvasTexture(cv);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-/* Papan statistik 3D — menggantikan kartu statistik HTML */
-function texStats() {
-  const W = 1024, H = 300;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  ctx.fillStyle = "#151B27"; ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = "#2A3447"; ctx.lineWidth = 4; ctx.strokeRect(10, 10, W - 20, H - 20);
-  const cw = W / 4;
-  STATS.forEach((s, i) => {
-    const cx = cw * i + cw / 2;
-    ctx.fillStyle = "#F5C518"; ctx.font = "900 110px Georgia,serif"; ctx.textAlign = "center";
-    ctx.fillText(s.angka, cx, 150);
-    ctx.fillStyle = "#A7B0C0"; ctx.font = "700 34px 'Plus Jakarta Sans',sans-serif";
-    ctx.fillText(s.label, cx, 210);
-    ctx.fillStyle = "#6E7890"; ctx.font = "500 24px 'Plus Jakarta Sans',sans-serif";
-    if (i === 0) ctx.fillText("Contoh", cx, 250);
-  });
-  ctx.textAlign = "left";
-  const t = new THREE.CanvasTexture(cv);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-function texKetua() {
-  const W = 512, H = 640;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  polaDasar(ctx, W, H, "#3B2F0B", "#8a6d10");
-  ctx.fillStyle = "#F5C518"; ctx.beginPath(); ctx.arc(W / 2, 190, 110, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = "#1A1405"; ctx.font = "900 140px Georgia,serif"; ctx.textAlign = "center";
-  ctx.fillText("F", W / 2, 240);
-  ctx.fillStyle = "#fff"; ctx.font = "900 64px Georgia,serif";
-  ctx.fillText("Fairuz", W / 2, 400);
-  ctx.fillStyle = "#F5C518"; ctx.font = "700 32px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText("KETUA BIBD", W / 2, 448);
-  ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.font = "500 28px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText("Klik untuk profil lengkap", W / 2, 560);
-  ctx.textAlign = "left";
-  const t = new THREE.CanvasTexture(cv);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-function texPlakat(baris1, baris2) {
-  const W = 512, H = 192;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  ctx.fillStyle = "#151B27"; ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = "#F5C518"; ctx.lineWidth = 5; ctx.strokeRect(10, 10, W - 20, H - 20);
-  ctx.fillStyle = "#F5C518"; ctx.font = "700 34px 'Plus Jakarta Sans',sans-serif";
-  ctx.fillText(baris1, 36, 80);
-  ctx.fillStyle = "#A7B0C0"; ctx.font = "500 28px 'Plus Jakarta Sans',sans-serif";
-  wrapText(ctx, baris2, 36, 128, W - 72, 36);
-  const t = new THREE.CanvasTexture(cv);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-function texMonolit(n) {
-  const W = 512, H = 768;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  ctx.fillStyle = "#151B27"; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = n.warna; ctx.fillRect(0, 0, W, 26); ctx.fillRect(0, H - 26, W, 26);
-  ctx.fillStyle = "#fff"; ctx.font = "900 72px Georgia,serif"; ctx.textAlign = "center";
-  wrapText(ctx, n.judul, W / 2, 330, W - 80, 78);
-  ctx.fillStyle = "#A7B0C0"; ctx.font = "500 30px 'Plus Jakarta Sans',sans-serif";
-  ctx.textAlign = "left";
-  wrapText(ctx, n.teks, 48, 430, W - 96, 42);
-  const t = new THREE.CanvasTexture(cv);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
 
-/* ---------- scene 3D ---------- */
-/* Tiap zona punya X sendiri agar konten zona lain tidak menumpuk di frame:
-   Beranda x=0 (papan judul + papan statistik), Album x=-14 (8 kartu),
-   Ketua x=+14 (pedestal), Tentang x=-28 (3 monolit). */
-const ZX = { beranda: 0, album: -18, ketua: 18, tentang: -36 };
-const ZONES = {
-  beranda: { pos: [ZX.beranda, 3.7, 13.5], tgt: [ZX.beranda, 3.5, 0] },
-  album: { pos: [ZX.album, -0.3, 10.5], tgt: [ZX.album, -0.9, 0] },
-  ketua: { pos: [ZX.ketua, 1.8, 10], tgt: [ZX.ketua, 0.4, 0] },
-  tentang: { pos: [ZX.tentang, 1.6, 10], tgt: [ZX.tentang, 0.2, 0] }
-};
-const GRID_X = [-4.05, -1.35, 1.35, 4.05];
-const ROW_TOP = 0.4, ROW_BOT = -2.6;
-let renderer = null, scene = null, camera = null, controls = null;
-let cardMeshes = [];
-let klikTargets = [];
-let camTween = null;
-let autoRotateIdle = null;
+  const lidPivot = new THREE.Group();
+  lidPivot.position.set(0, 0.32, -1.25);
+  group.add(lidPivot);
+  const lid = new THREE.Mesh(new RoundedBoxGeometry(3.4, 0.16, 2.5, 4, 0.07), matBody.clone());
+  lid.position.set(0, 0.06, 1.25);
+  lid.castShadow = true;
+  lidPivot.add(lid);
+  const label = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.9, 1.42),
+    new THREE.MeshStandardMaterial({ map: labelTexture(), roughness: 0.6 })
+  );
+  label.rotation.x = -Math.PI / 2;
+  label.position.set(0, 0.145, 1.25);
+  lidPivot.add(label);
+  const band = new THREE.Mesh(
+    new THREE.BoxGeometry(3.44, 0.5, 0.4),
+    new THREE.MeshStandardMaterial({ color: 0x0071e3, roughness: 0.5 })
+  );
+  band.position.set(0, 0, 0);
+  group.add(band);
 
-function fail3D(pesan) {
-  document.getElementById("loader").hidden = true;
-  document.getElementById("webglFail").hidden = false;
-  document.getElementById("fallback2d").hidden = false;
-  document.body.classList.add("mode-2d");
-  if (pesan) console.warn("[BIBD-3D]", pesan);
-  renderFallback();
-}
+  /* Parallax mouse halus. */
+  let mx = 0, my = 0, cx = 0, cy = 0;
+  if (finePointer && !reducedMotion) {
+    window.addEventListener("pointermove", (e) => {
+      mx = (e.clientX / window.innerWidth - 0.5) * 2;
+      my = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+  }
 
-function zoneTo(nama) {
-  const z = ZONES[nama];
-  if (!z) return;
-  currentZone = nama;
-  document.getElementById("zoneLabel").textContent = "Zona: " + (ZONE_LABEL[nama] || nama);
-  document.querySelectorAll(".zones button").forEach((b) => {
-    const on = b.getAttribute("data-zone") === nama;
-    b.classList.toggle("is-active", on);
-    if (on) b.setAttribute("aria-current", "page");
-    else b.removeAttribute("aria-current");
-  });
-  if (!camera || !controls) return;
-  camTween = {
-    t: 0,
-    dur: reducedMotion ? 0.01 : 1.2,
-    p0: camera.position.clone(), p1: new THREE.Vector3(...z.pos),
-    t0: controls.target.clone(), t1: new THREE.Vector3(...z.tgt)
-  };
-}
+  let visible = true;
+  new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(mount);
 
-function applyFilter3D() {
-  updateCountOnly();
-  const hasil = visibleArsip();
-  const ids = new Set(hasil.map((a) => a.id));
-  let vi = 0;
-  cardMeshes.forEach((m) => {
-    const on = ids.has(m.userData.arsipId);
-    if (on) {
-      const cx = ZX.album + GRID_X[vi % 4], cy = vi < 4 ? ROW_TOP : ROW_BOT;
-      m.userData.target = new THREE.Vector3(cx, cy, 0);
-      m.userData.targetScale = m.userData.hovered ? 1.1 : 1.0;
-      vi++;
-    } else {
-      m.userData.target = new THREE.Vector3(m.userData.home.x, m.userData.home.y, -7);
-      m.userData.targetScale = 0.001;
+  const clock = new THREE.Clock();
+  let firstFrame = true;
+  function ease(p) { return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
+
+  function frame() {
+    requestAnimationFrame(frame);
+    if (!visible || heroState.still) return;
+    const t = clock.getElapsedTime();
+    const p = ease(THREE.MathUtils.clamp(heroProgress(), 0, 1));
+    heroState.progress = p;
+    updateSteps(p);
+
+    cx += (mx - cx) * 0.04;
+    cy += (my - cy) * 0.04;
+    const sway = reducedMotion ? 0 : Math.sin(t * 0.5) * 0.05;
+    group.rotation.y = -0.55 + p * Math.PI * 0.75 + sway + cx * 0.12;
+    group.rotation.x = cy * 0.06;
+    lidPivot.rotation.x = -p * 1.85;
+    pages.forEach((pg, i) => { pg.rotation.y = p * (i - 1) * 0.1; });
+    camera.position.y = 2.4 + p * 0.8;
+    camera.position.x = cx * 0.3;
+    camera.lookAt(0, 0.1, 0);
+
+    const w = mount.clientWidth, h = mount.clientHeight;
+    if (renderer.domElement.width !== Math.floor(w * renderer.getPixelRatio())) {
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
     }
+    renderer.render(scene, camera);
+    if (firstFrame) { firstFrame = false; loading.hidden = true; heroState.ok = true; }
+  }
+  frame();
+
+  window.addEventListener("resize", () => {
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    camera.aspect = mount.clientWidth / mount.clientHeight;
+    camera.updateProjectionMatrix();
   });
+  window.addEventListener("scroll", () => {
+    heroState.progress = heroProgress();
+    updateSteps(heroState.progress);
+  }, { passive: true });
+
+  return { scene, camera, renderer, group };
 }
 
-function initScene() {
-  const stage = document.getElementById("stage3d");
-  renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: false });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x0b0e14, 1);
-  if (!isMobile) {
+/* ---------- AVATAR 3D KETUA: kubus lembut studio ---------- */
+function initKetua3D() {
+  const mount = document.getElementById("ketuaCanvas");
+  try {
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  }
-  stage.appendChild(renderer.domElement);
+    mount.appendChild(renderer.domElement);
+    ketuaState.renderer = renderer;
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x0b0e14, 0.022);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(32, mount.clientWidth / mount.clientHeight, 0.1, 40);
+    camera.position.set(0, 0.6, 6.4);
+    camera.lookAt(0, 0, 0);
 
-  camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
-  camera.position.set(...ZONES.beranda.pos);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x333338, 1.0));
+    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    key.position.set(3, 5, 4);
+    key.castShadow = true;
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x2997ff, 0.5);
+    rim.position.set(-4, 2, -3);
+    scene.add(rim);
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(...ZONES.beranda.tgt);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.06;
-  controls.enablePan = false; /* kunci zona: kamera tidak boleh nyasar */
-  controls.minDistance = 4; controls.maxDistance = 24;
-  controls.maxPolarAngle = Math.PI * 0.55;
-  controls.autoRotate = !reducedMotion;
-  controls.autoRotateSpeed = 0.55;
-  controls.addEventListener("start", () => {
-    controls.autoRotate = false;
-    if (autoRotateIdle) clearTimeout(autoRotateIdle);
-  });
-  controls.addEventListener("end", () => {
-    if (autoRotateIdle) clearTimeout(autoRotateIdle);
-    if (!reducedMotion) autoRotateIdle = setTimeout(() => { controls.autoRotate = true; }, 4000);
-  });
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.ShadowMaterial({ opacity: 0.3 }));
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1.35;
+    ground.receiveShadow = true;
+    scene.add(ground);
 
-  /* cahaya */
-  scene.add(new THREE.HemisphereLight(0xf2efe6, 0x11161f, 0.55));
-  const dir = new THREE.DirectionalLight(0xfff2cf, 1.1);
-  dir.position.set(6, 12, 8);
-  if (!isMobile) { dir.castShadow = true; dir.shadow.mapSize.set(1024, 1024); }
-  scene.add(dir);
-  const lentera = new THREE.PointLight(0xf5c518, 60, 40, 2);
-  lentera.position.set(ZX.beranda, 5.5, 5);
-  scene.add(lentera);
-  const isiAlbum = new THREE.PointLight(0xfff2cf, 40, 26, 2);
-  isiAlbum.position.set(ZX.album, 4, 5);
-  scene.add(isiAlbum);
-  const isiKetua = new THREE.PointLight(0xf5c518, 30, 20, 2);
-  isiKetua.position.set(ZX.ketua, 4, 4);
-  scene.add(isiKetua);
-  const isiTentang = new THREE.PointLight(0xfff2cf, 30, 24, 2);
-  isiTentang.position.set(ZX.tentang, 4, 5);
-  scene.add(isiTentang);
+    const cube = new THREE.Mesh(
+      new RoundedBoxGeometry(1.9, 1.9, 1.9, 4, 0.35),
+      new THREE.MeshStandardMaterial({ color: 0xe8e8ed, roughness: 0.5 })
+    );
+    cube.castShadow = true;
+    scene.add(cube);
+    const face = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.5, 1.5),
+      new THREE.MeshStandardMaterial({ map: fTexture(), roughness: 0.55 })
+    );
+    face.position.z = 0.96;
+    scene.add(face);
+    const avatar = new THREE.Group();
+    avatar.add(cube); avatar.add(face);
+    scene.add(avatar);
 
-  /* lantai */
-  const lantai = new THREE.Mesh(
-    new THREE.PlaneGeometry(110, 40),
-    new THREE.ShadowMaterial({ opacity: 0.35 })
-  );
-  lantai.rotation.x = -Math.PI / 2;
-  lantai.position.y = -4.4;
-  lantai.receiveShadow = true;
-  scene.add(lantai);
-  const alas = new THREE.Mesh(
-    new THREE.PlaneGeometry(110, 40),
-    new THREE.MeshStandardMaterial({ color: 0x0d1119, roughness: 1 })
-  );
-  alas.rotation.x = -Math.PI / 2;
-  alas.position.y = -4.42;
-  scene.add(alas);
-
-  /* debu arsip */
-  const N = isMobile ? 150 : 350;
-  const pg = new THREE.BufferGeometry();
-  const pp = new Float32Array(N * 3);
-  for (let i = 0; i < N; i++) {
-    pp[i * 3] = (Math.random() - 0.5) * 70;
-    pp[i * 3 + 1] = Math.random() * 14 - 4;
-    pp[i * 3 + 2] = (Math.random() - 0.5) * 26;
-  }
-  pg.setAttribute("position", new THREE.BufferAttribute(pp, 3));
-  const debu = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xf5c518, size: 0.045, transparent: true, opacity: 0.55 }));
-  debu.userData.debu = true;
-  scene.add(debu);
-
-  /* --- ZONA BERANDA: papan judul + papan statistik (menggantikan hero/stats HTML) --- */
-  const papanJudul = new THREE.Mesh(
-    new THREE.BoxGeometry(9.5, 4.4, 0.25),
-    new THREE.MeshStandardMaterial({ map: texJudul(), roughness: 0.7 })
-  );
-  papanJudul.position.set(ZX.beranda, 5.9, -2.5);
-  scene.add(papanJudul);
-  const papanStats = new THREE.Mesh(
-    new THREE.BoxGeometry(8.6, 2.5, 0.22),
-    new THREE.MeshStandardMaterial({ map: texStats(), roughness: 0.7 })
-  );
-  papanStats.position.set(ZX.beranda, 1.9, -2.2);
-  scene.add(papanStats);
-
-  /* --- ZONA ALBUM: 8 kartu 3D --- */
-  ARSIP.forEach((a, i) => {
-    const tex = texKartu(a);
-    const depan = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.65, transparent: true });
-    const sisi = new THREE.MeshStandardMaterial({ color: 0x1b2333, roughness: 0.8, transparent: true });
-    const m = new THREE.Mesh(new THREE.BoxGeometry(2.2, 3.0, 0.18), [sisi, sisi, sisi, sisi, depan, sisi]);
-    const hx = ZX.album + GRID_X[i % 4], hy = i < 4 ? ROW_TOP : ROW_BOT;
-    m.position.set(hx, hy, 0);
-    m.castShadow = !isMobile;
-    m.userData = { type: "arsip", arsipId: a.id, judul: a.judul, home: new THREE.Vector3(hx, hy, 0), target: new THREE.Vector3(hx, hy, 0), targetScale: 1, hovered: false };
-    scene.add(m);
-    cardMeshes.push(m);
-    klikTargets.push(m);
-  });
-
-  /* --- ZONA KETUA: pedestal Fairuz + 3 plakat --- */
-  const gKetua = new THREE.Group();
-  gKetua.position.set(ZX.ketua, 0, 0);
-  const alasK = new THREE.Mesh(new THREE.CylinderGeometry(2.0, 2.4, 0.5, 28), new THREE.MeshStandardMaterial({ color: 0x1b2333, roughness: 0.8 }));
-  alasK.position.y = -3.4; alasK.receiveShadow = true;
-  gKetua.add(alasK);
-  const tiang = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.3, 1.6, 28), new THREE.MeshStandardMaterial({ color: 0x242e44, roughness: 0.75 }));
-  tiang.position.y = -2.3; tiang.castShadow = !isMobile;
-  gKetua.add(tiang);
-  const kartuK = new THREE.Mesh(new THREE.BoxGeometry(2.6, 3.3, 0.2), new THREE.MeshStandardMaterial({ map: texKetua(), roughness: 0.65 }));
-  kartuK.position.y = 0.9; kartuK.castShadow = !isMobile;
-  kartuK.userData = { type: "ketua" };
-  gKetua.add(kartuK);
-  klikTargets.push(kartuK);
-  const plakat = [
-    ["Kurasi Arsip", "Menyeleksi & mengkatalog arsip."],
-    ["Koordinasi", "Jadwal & dokumentasi kegiatan."],
-    ["Ketertiban", "Standar konten bersih."]
-  ];
-  plakat.forEach((p, i) => {
-    const pl = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.85, 0.12), new THREE.MeshStandardMaterial({ map: texPlakat(p[0], p[1]), roughness: 0.7 }));
-    const ang = (i - 1) * 0.62;
-    pl.position.set(ZX.ketua + Math.sin(ang) * 3.4, -0.9 + (i === 1 ? 0.5 : 0), Math.cos(ang) * 3.2 - 0.6);
-    pl.lookAt(ZX.ketua, -0.6, 8);
-    pl.userData = { type: "ketua" };
-    scene.add(pl);
-    klikTargets.push(pl);
-  });
-  scene.add(gKetua);
-
-  /* --- ZONA TENTANG: 3 monolit nilai --- */
-  const dasarX = ZX.tentang;
-  NILAI.forEach((n, i) => {
-    const mono = new THREE.Mesh(new THREE.BoxGeometry(2.3, 3.6, 2.3), new THREE.MeshStandardMaterial({ map: texMonolit(n), roughness: 0.7 }));
-    mono.position.set(dasarX + (i - 1) * 3.1, 0.1, 0);
-    mono.castShadow = !isMobile;
-    mono.userData = { type: "nilai", index: i, judul: n.judul };
-    scene.add(mono);
-    klikTargets.push(mono);
-    const fond = new THREE.Mesh(new THREE.BoxGeometry(2.7, 0.3, 2.7), new THREE.MeshStandardMaterial({ color: 0x1b2333 }));
-    fond.position.set(dasarX + (i - 1) * 3.1, -1.85, 0);
-    scene.add(fond);
-  });
-
-  /* raycaster klik + hover */
-  const ray = new THREE.Raycaster();
-  const ptr = new THREE.Vector2();
-  const tip = document.getElementById("tip3d");
-  let downAt = 0;
-  function setPtr(e) {
-    ptr.x = (e.clientX / window.innerWidth) * 2 - 1;
-    ptr.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  }
-  renderer.domElement.addEventListener("pointermove", (e) => {
-    setPtr(e);
-    ray.setFromCamera(ptr, camera);
-    const hit = ray.intersectObjects(klikTargets, false)[0];
-    cardMeshes.forEach((m) => { m.userData.hovered = !!(hit && hit.object === m); });
-    if (hit) {
-      const u = hit.object.userData;
-      const label = u.type === "arsip" ? u.judul : u.type === "ketua" ? "Fairuz — Ketua BIBD" : NILAI[u.index]?.judul || "";
-      tip.textContent = label;
-      tip.style.left = e.clientX + "px";
-      tip.style.top = e.clientY + "px";
-      tip.hidden = false;
-      renderer.domElement.style.cursor = "pointer";
-    } else {
-      tip.hidden = true;
-      renderer.domElement.style.cursor = "grab";
+    let visible = true;
+    new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(mount);
+    const clock = new THREE.Clock();
+    function frame() {
+      requestAnimationFrame(frame);
+      if (!visible) return;
+      const t = clock.getElapsedTime();
+      if (!reducedMotion) {
+        avatar.rotation.y = t * 0.4;
+        avatar.rotation.x = Math.sin(t * 0.5) * 0.08;
+        avatar.position.y = Math.sin(t * 0.9) * 0.08;
+      }
+      renderer.render(scene, camera);
     }
-  });
-  renderer.domElement.addEventListener("pointerdown", () => { downAt = Date.now(); });
-  renderer.domElement.addEventListener("pointerup", (e) => {
-    if (Date.now() - downAt > 350) return; /* itu drag orbit, bukan klik */
-    setPtr(e);
-    ray.setFromCamera(ptr, camera);
-    const hit = ray.intersectObjects(klikTargets, false)[0];
-    if (!hit) return;
-    const u = hit.object.userData;
-    if (u.type === "arsip") openSheetArsip(u.arsipId);
-    else if (u.type === "ketua") openSheetKetua();
-    else if (u.type === "nilai") openSheetNilai(u.index);
-  });
-
-  /* resize */
-  window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
-  /* loop */
-  const jam = new THREE.Clock();
-  function loop() {
-    requestAnimationFrame(loop);
-    const dt = Math.min(jam.getDelta(), 0.05);
-    const t = jam.elapsedTime;
-    if (camTween) {
-      camTween.t += dt / camTween.dur;
-      const k = Math.min(camTween.t, 1);
-      const e = 1 - Math.pow(1 - k, 3);
-      camera.position.lerpVectors(camTween.p0, camTween.p1, e);
-      controls.target.lerpVectors(camTween.t0, camTween.t1, e);
-      if (k >= 1) camTween = null;
-    }
-    cardMeshes.forEach((m, i) => {
-      m.position.lerp(m.userData.target, 1 - Math.pow(0.001, dt));
-      const sT = m.userData.hovered ? Math.max(m.userData.targetScale, 1.1) : m.userData.targetScale;
-      const s = THREE.MathUtils.lerp(m.currentScale ?? 1, sT, 1 - Math.pow(0.002, dt));
-      m.currentScale = s;
-      m.scale.setScalar(Math.max(s, 0.001));
-      m.visible = s > 0.02;
-      if (!reducedMotion && m.visible) m.position.y += Math.sin(t * 1.2 + i * 0.9) * 0.0016;
-      m.rotation.y = THREE.MathUtils.lerp(m.rotation.y, (m.userData.hovered ? 0.18 : Math.sin(t * 0.4 + i) * 0.06), 0.08);
-    });
-    scene.traverse((o) => {
-      if (o.userData.debu && !reducedMotion) { o.rotation.y += dt * 0.014; o.position.y = Math.sin(t * 0.18) * 0.35; }
-    });
-    controls.update();
-    renderer.render(scene, camera);
+    frame();
+    ketuaState.ok = true;
+  } catch (err) {
+    console.warn("[BIBD-3D] avatar ketua gagal:", err && err.message);
   }
-  loop();
-  document.getElementById("loader").hidden = true;
-  applyFilter3D();
 }
 
-/* ---------- wiring DOM ---------- */
+/* ---------- wiring ---------- */
 function wireDOM() {
-  document.querySelectorAll("[data-zone]").forEach((el) => {
-    el.addEventListener("click", (e) => {
-      e.preventDefault();
-      zoneTo(el.getAttribute("data-zone"));
-    });
-  });
-  /* pintasan keyboard 1–4 untuk zona */
-  document.addEventListener("keydown", (e) => {
-    if (e.target.matches("input,textarea")) return;
-    const map = { 1: "beranda", 2: "album", 3: "ketua", 4: "tentang" };
-    if (map[e.key]) zoneTo(map[e.key]);
-  });
   document.querySelectorAll(".chip").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".chip").forEach((b) => { b.classList.remove("is-active"); b.setAttribute("aria-pressed", "false"); });
       btn.classList.add("is-active");
       btn.setAttribute("aria-pressed", "true");
       activeFilter = btn.getAttribute("data-filter");
-      applyFilter3D();
-      renderFallback();
+      renderAlbum();
     });
   });
-  document.getElementById("dockSearch").addEventListener("input", (e) => {
+  document.getElementById("albumSearch").addEventListener("input", (e) => {
     query = e.target.value;
-    applyFilter3D();
-    renderFallback();
+    renderAlbum();
   });
-  document.getElementById("albumGrid").addEventListener("click", (e) => {
-    const btn = e.target.closest(".detail-btn");
-    if (btn) openSheetArsip(btn.getAttribute("data-id"));
-  });
-  /* ciutkan dock */
-  const collapse = document.getElementById("dockCollapse");
-  collapse.addEventListener("click", () => {
-    const dock = document.getElementById("dock");
-    const ciut = dock.classList.toggle("collapsed");
-    collapse.setAttribute("aria-expanded", String(!ciut));
-    collapse.setAttribute("aria-label", ciut ? "Bentangkan panel kontrol" : "Ciutkan panel kontrol");
-  });
-  /* sheet: tutup + focus trap + Esc */
-  document.getElementById("sheetClose").addEventListener("click", closeSheet);
-  document.getElementById("sheetBackdrop").addEventListener("click", function (e) { if (e.target === this) closeSheet(); });
-  document.getElementById("sheetBackdrop").addEventListener("keydown", (e) => {
+  document.getElementById("ketuaDetailBtn").addEventListener("click", openKetua);
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+  document.getElementById("modalBackdrop").addEventListener("click", function (e) { if (e.target === this) closeModal(); });
+  document.getElementById("modalBackdrop").addEventListener("keydown", (e) => {
     if (e.key !== "Tab") return;
-    const f = Array.from(document.querySelectorAll('#sheetBackdrop button, #sheetBackdrop [href], #sheetBackdrop input')).filter((x) => !x.disabled && x.offsetParent !== null);
+    const f = Array.from(document.querySelectorAll("#modalBackdrop button")).filter((x) => !x.disabled && x.offsetParent !== null);
     if (!f.length) { e.preventDefault(); return; }
     const first = f[0], last = f[f.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !document.getElementById("sheetBackdrop").hidden) closeSheet();
-  });
-  /* Mode 2D toggle */
-  const m2 = document.getElementById("mode2dBtn");
-  m2.addEventListener("click", () => {
-    const aktif = m2.getAttribute("aria-pressed") === "true";
-    const nyala = !aktif;
-    m2.setAttribute("aria-pressed", String(nyala));
-    m2.querySelector("span").textContent = nyala ? "3D" : "2D";
-    document.body.classList.toggle("mode-2d", nyala);
-    document.getElementById("fallback2d").hidden = !nyala;
-    if (nyala) renderFallback();
+    if (e.key === "Escape" && !document.getElementById("modalBackdrop").hidden) closeModal();
   });
 }
 
 /* ---------- boot ---------- */
+renderStats();
+renderAlbum();
 wireDOM();
-updateCountOnly();
+initReveal();
 icons();
 try {
   if (!window.WebGLRenderingContext) throw new Error("WebGL tidak didukung");
-  initScene();
+  initHero3D();
+  initKetua3D();
 } catch (err) {
-  fail3D(err && err.message);
+  console.warn("[BIBD-3D]", err && err.message);
+  document.getElementById("viewerLoading").hidden = true;
+  document.getElementById("viewerFallback").hidden = false;
 }
 
 /* API untuk QA otomatis */
 window.__BIBD = {
-  ARSIP, NILAI,
+  ARSIP,
   visibleCount: () => visibleArsip().length,
   visibleIds: () => visibleArsip().map((a) => a.id),
-  applyFilter: (kat, q) => { activeFilter = kat; query = q || ""; applyFilter3D(); renderFallback(); },
-  openArsip: openSheetArsip, openKetua: openSheetKetua, openNilai: openSheetNilai,
-  zoneTo, currentZone: () => currentZone,
-  still: () => { if (controls) controls.autoRotate = false; },
-  cardCount: () => cardMeshes.length,
-  webglOK: () => !!renderer
+  applyFilter: (kat, q) => { activeFilter = kat; query = q || ""; renderAlbum(); },
+  openArsip, openKetua,
+  heroProgress: () => heroState.progress,
+  still: () => { heroState.still = true; },
+  webglOK: () => heroState.ok
 };
